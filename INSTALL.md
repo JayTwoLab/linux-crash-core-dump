@@ -19,6 +19,8 @@
 - systemd --user 방식은 사용자 세션에 의존합니다.
 - systemd system 서비스만이 로그인 없이 부팅 시 자동 실행됩니다.
 
+<br />
+
 ---
 
 ## 2. 정석 구성 방법
@@ -102,6 +104,8 @@ journalctl -u hello-core.service -f
 3. core size 제한 해제
    systemd 서비스 설정의 `LimitCORE=infinity`
 
+<br />
+
 ---
 
 ## 4. 전체 흐름 요약
@@ -115,6 +119,8 @@ journalctl -u hello-core.service -f
 ```
 
 로그인, bash, SSH는 필요하지 않습니다.
+
+<br />
 
 ---
 
