@@ -43,33 +43,35 @@
 
 ## 사용 예시
 
-1. core dump 시스템 설정  
+- (1) core dump 시스템 설정  
    ```
    sudo ./setup_core_dump_systemwide.sh
    ```
-
-2. hello 빌드  
+   - 이 설정은 반드시 superuser 계정 권한이 필요함
+- (2) 실행 프로그램(hello) 빌드  
    ```
    g++ -g -O0 -Wall -Wextra -o hello main.cpp
    ```
-
-3. core dump 생성  
+- (3) core dump 생성  
    ```
    ./run_hello_with_core.sh
    ```
-
-4. core 파일 목록 확인  
+   - core.실행프로그램맹.프로세스아이디.시간 형식의 파일이 생성됨
+- (4) core 파일 목록 확인  
    ```
    ./list_core_with_time.sh
    ```
-
-5. core 분석  
+- (5) core 분석  
    ```
    ./gdb_hello_core.sh core.hello.<pid>.<time>
    ```
-
-6. 데몬 실행  (또는 `run_hello_with_core.sh`로 1회 실행)
+   - gdb 명령 `r` : run
+   - gdb 명령 `bt full` : 현재 스레드의 호출 스택 (지역 변수 값까지 포함)
+   - gdb 명령 `list` 라인수 : 소스코드 표시
+- (6) 데몬 실행 
    ```
    ./run_hello_with_core_daemon.sh
    ```
+   - 또는, `run_hello_with_core.sh`로 1회 실행
+
 
