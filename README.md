@@ -5,19 +5,26 @@
 ## 구성 파일
 
 - **main.cpp**  
-   - 고의로 segmentation fault를 발생시키는 간단한 C++ 예제입니다.  
+   - 고의로 segmentation fault를 발생시키는 간단한 C++ 예제(`main.cpp`)입니다.
+      - ```cpp
+        int main() {
+          std::string *ptr = NULL;
+          ptr->clear(); // crash here
+          return 0;
+        }
+        ```
    - 빌드 예시:
-   ```
+   ```bash
    g++ -g -O0 -Wall -Wextra -o hello main.cpp
    ```
    - AddressSanitizer/UBSanitizer 사용:
-   ```
+   ```bash
    g++ -g -O0 -Wall -Wextra -fsanitize=address,undefined -fno-omit-frame-pointer -o hello main.cpp
    ```
 
 - **setup_core_dump_systemwide.sh**  
    - 시스템 전체에 core dump 파일이 생성되도록 core_pattern을 설정합니다.  
-   ```
+   ```bash
    sudo ./setup_core_dump_systemwide.sh
    ```
    - core 파일명 패턴: `core.<exe>.<pid>.<time>`
@@ -34,7 +41,7 @@
 
 - **gdb_hello_core.sh**  
   - 생성된 core dump 파일을 gdb로 분석하는 스크립트입니다.
-   ```
+   ```bash
    ./gdb_hello_core.sh <core_dump_file>
    ```
 
@@ -44,25 +51,25 @@
 ## 사용 예시
 
 - (1) core dump 시스템 설정  
-   ```
+   ```bash
    sudo ./setup_core_dump_systemwide.sh
    ```
    - 이 설정은 반드시 superuser 계정 권한이 필요함
 - (2) 실행 프로그램(hello) 빌드  
-   ```
+   ```bash
    g++ -g -O0 -Wall -Wextra -o hello main.cpp
    ```
 - (3) core dump 생성  
-   ```
+   ```bash
    ./run_hello_with_core.sh
    ```
    - core.실행프로그램맹.프로세스아이디.시간 형식의 파일이 생성됨
 - (4) core 파일 목록 확인  
-   ```
+   ```bash
    ./list_core_with_time.sh
    ```
 - (5) core 분석  
-   ```
+   ```bash
    ./gdb_hello_core.sh core.hello.<pid>.<time>
    ```
    - gdb 명령 `r` : run
