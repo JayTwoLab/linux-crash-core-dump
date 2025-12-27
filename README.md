@@ -54,7 +54,7 @@
 <br />
 
 - **setup_core_dump_systemwide.sh**  
-   - 시스템 전체에 core dump 파일이 생성되도록 core_pattern을 설정합니다.  
+   - 시스템 전체에 core dump 파일이 생성되도록 core_pattern을 설정합니다. (sudo 권한 필요)  
    ```bash
    sudo ./setup_core_dump_systemwide.sh
    ```
@@ -71,7 +71,7 @@
 - **run_hello_with_core.sh**  
    - hello 프로그램을 실행하여 core dump를 생성합니다.  
    - 실행 전 systemwide 설정이 필요합니다.
-   - 실행 프로그램(`hello`)의 파일명돠 경로를 설정합니다.
+   - 실행 프로그램(`hello`)의 파일명과 경로를 설정합니다.
    ```bash
     # 작업 디렉터리 및 실행 파일 경로 설정
     WORKDIR="/home/jaytwo/workspace/coredump-workspace"
