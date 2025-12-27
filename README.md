@@ -21,11 +21,34 @@
    ```bash
    g++ -g -O0 -Wall -Wextra -o hello main.cpp
    ```
-   - AddressSanitizer/UBSanitizer 사용:
+   - `AddressSanitizer`/`UBSanitizer` 사용:
    ```bash
    g++ -g -O0 -Wall -Wextra -fsanitize=address,undefined -fno-omit-frame-pointer -o hello main.cpp
    ```
-
+	- `AddressSanitizer` (`ASan`) : 메모리 오류를 실행 중에 탐지합니다.
+	   - 탐지 가능한 오류
+		  - 힙/스택 버퍼 오버플로우
+		  - use-after-free (해제 후 접근)
+		  - double free
+		  - 메모리 누수
+		  - 스택 오버플로우
+	   - 특징
+		  - 런타임에 메모리 접근을 감시
+		  - 오류 발생 시 정확한 스택 트레이스 출력
+		  - 성능 오버헤드 존재 (약 2~3배)
+	- `UndefinedBehaviorSanitizer` (`UBSan`) : C++ 표준에서 정의되지 않은 동작(Undefined Behavior)을 탐지합니다.
+	   - 탐지 가능한 오류
+		  - 정수 오버플로우
+		  - 잘못된 형변환
+		  - nullptr 역참조
+		  - 배열 범위 초과
+		  - 잘못된 메모리 정렬 접근
+		  - 잘못된 enum 값 사용
+	   - 특징
+		  - 논리 오류 탐지에 효과적
+		  - ASan보다 가벼움
+		  - 크래시 전에 경고 출력 가능
+      
 ---
 
 <br />
