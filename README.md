@@ -2,6 +2,10 @@
 
 - Linux C/C++ 프로그램의 코어 덤프 생성, 분석, 관리 자동화 예제
 
+---
+
+<br />
+
 ## 구성 파일
 
 - **main.cpp**  
@@ -22,6 +26,10 @@
    g++ -g -O0 -Wall -Wextra -fsanitize=address,undefined -fno-omit-frame-pointer -o hello main.cpp
    ```
 
+---
+
+<br />
+
 - **setup_core_dump_systemwide.sh**  
    - 시스템 전체에 core dump 파일이 생성되도록 core_pattern을 설정합니다.  
    ```bash
@@ -29,24 +37,62 @@
    ```
    - core 파일명 패턴: `core.<exe>.<pid>.<time>`
 
+---
+
+<br />
+
 - **run_hello_with_core.sh**  
    - hello 프로그램을 실행하여 core dump를 생성합니다.  
    - 실행 전 systemwide 설정이 필요합니다.
+   - 실행 프로그램(`hello`)의 파일명돠 경로를 설정합니다.
+   ```bash
+    # 작업 디렉터리 및 실행 파일 경로 설정
+    WORKDIR="/home/jaytwo/workspace/coredump-workspace"
+    EXEC="${WORKDIR}/hello"
+   ``` 
+
+---
+
+<br />
 
 - **run_hello_with_core_daemon.sh**  
    - hello 프로그램을 데몬 형태로 반복 실행합니다.  
       - 프로그램이 종료될 때마다 자동 재시작
       - core dump 허용 및 ASAN/UBSAN 환경변수 설정
       - 로그 파일(hello_daemon.log)은 10MB를 초과하면 최근 10,000줄만 남기고 오래된 내용은 삭제됨
+      - 실행 파일명 및 경로를 설정 후 사용합니다.
+      ```bash
+      # 작업 디렉터리 및 실행 파일 경로 설정
+      WORKDIR="/home/jaytwo/workspace/coredump-workspace"
+      EXEC="${WORKDIR}/hello"
+      ```
+  
+---
+
+<br />
 
 - **gdb_hello_core.sh**  
   - 생성된 core dump 파일을 gdb로 분석하는 스크립트입니다.
    ```bash
    ./gdb_hello_core.sh <core_dump_file>
    ```
+  - 실행 파일명 및 경로를 설정 후 사용합니다.
+  ```bash
+   # 작업 디렉터리 및 실행 파일 경로 설정
+   WORKDIR="/home/jaytwo/workspace/coredump-workspace"
+   EXEC="${WORKDIR}/hello"
+  ```     
+
+---
+
+<br />
 
 - **list_core_with_time.sh**  
   - 현재 디렉터리의 core 파일 목록과 각 파일의 타임스탬프(사람이 읽기 쉬운 시간)를 출력합니다.
+
+---
+
+<br />
 
 ## 사용 예시
 
@@ -55,7 +101,7 @@
    sudo ./setup_core_dump_systemwide.sh
    ```
    - 이 설정은 반드시 superuser 계정 권한이 필요함
-- (2) 실행 프로그램(hello) 빌드  
+- (2) 실행 프로그램(hello) 빌드 (Debug 심볼이 추가되도록 빌드한다.)  
    ```bash
    g++ -g -O0 -Wall -Wextra -o hello main.cpp
    ```
