@@ -38,26 +38,29 @@ After=network.target
 
 [Service]
 Type=simple
+# 실행 프로그램 경로 및 이름
 WorkingDirectory=/home/jaytwo/workspace
-ExecStart=/home/jaytwo/workspace/hello
+ExecStart=/home/jaytwo/workspace/hello # 하단의 User 계정의 +x 권한이 되어 잇어야 함
 
-Restart=always
-RestartSec=1
+Restart=always # 어떤 종료든 무조건 재시작
+# Restart=on-failure 비정상 종료 시에만 재시작
+RestartSec=60 # 재시작 대기 시간 (초)
+# StartLimitIntervalSec=60 StartLimitBurst=5 무한 재시작 방지 (60초 안에 5번 이상 실패하면 중지) 
 
-LimitCORE=infinity
+LimitCORE=infinity # core dump 파일 무제한 생성
 
-User=jaytwo
-Group=jaytwo
+User=jaytwo # 리눅스 계정
+Group=jaytwo # 그룹은 생략 가능함. groups 또는 id 명령으로 확인 가능.
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=multi-user.target # 네트워크 포함한 일반 서버 상태 (GUI 않해도 됨)
 ```
 
 <br />
 
 ---
 
-### 2.2. 서비스 등록 및 실행 (root, 1회)
+### 2.2. 서비스 등록 및 실행 (`root`, 1회)
 
 ```bash
 sudo systemctl daemon-reload
