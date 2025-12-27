@@ -17,7 +17,7 @@
           return 0;
         }
         ```
-   - 빌드 예시:
+   - `Debug` 빌드 예시:
    ```bash
    g++ -g -O0 -Wall -Wextra -o hello main.cpp
    ```
