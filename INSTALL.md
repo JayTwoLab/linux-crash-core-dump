@@ -56,6 +56,12 @@ Group=jaytwo # 그룹은 생략 가능함. groups 또는 id 명령으로 확인 
 WantedBy=multi-user.target # 네트워크 포함한 일반 서버 상태 (GUI 않해도 됨)
 ```
 
+- `Restart=on-failure` 에서 재시작되는 경우
+   - 프로세스가 non-zero exit code 로 종료
+   - 시그널에 의해 종료됨 (SIGSEGV, SIGABRT 등)
+   - Watchdog 타임아웃 발생
+   - OOM Killer 에 의해 종료됨
+
 <br />
 
 ---
