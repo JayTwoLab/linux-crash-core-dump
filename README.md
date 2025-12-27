@@ -59,7 +59,16 @@
    - hello 프로그램을 데몬 형태로 반복 실행합니다.  
       - 프로그램이 종료될 때마다 자동 재시작
       - core dump 허용 및 ASAN/UBSAN 환경변수 설정
-      - 로그 파일(hello_daemon.log)은 10MB를 초과하면 최근 10,000줄만 남기고 오래된 내용은 삭제됨
+      - 로그 파일(hello_daemon.log)은 10MB를 초과하면 최근 10,000줄만 남기고 오래된 내용은 삭제합니다.
+      ```bash
+      # 로그 파일 크기 제한: 10MB 초과 시 최근 10000줄만 남김
+      MAX_LOG_SIZE=10485760 # 10MB
+      MAX_LOG_LINES=10000
+      if [ -f "${LOG}" ] && [ $(stat -c%s "${LOG}") -ge $MAX_LOG_SIZE ]; then
+          tail -n $MAX_LOG_LINES "${LOG}" > "${LOG}.tmp" && mv "${LOG}.tmp" "${LOG}"
+          echo "[$(date '+%F %T')] log trimmed to last $MAX_LOG_LINES lines" >> "${LOG}"
+      fi
+      ```
       - 실행 파일명 및 경로를 설정 후 사용합니다.
       ```bash
       # 작업 디렉터리 및 실행 파일 경로 설정
