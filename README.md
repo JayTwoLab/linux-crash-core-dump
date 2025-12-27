@@ -59,6 +59,10 @@
    sudo ./setup_core_dump_systemwide.sh
    ```
    - core 파일명 패턴: `core.<exe>.<pid>.<time>`
+      - `<exe>` : 실핼 프로그램명
+      - `<pid>` : 프로세스 아이디
+      - `<time>` : epoch time
+         - `date -d @<time> '+%Y-%m-%d %H:%M:%S %Z'` 명령으로 시간정보를 볼 수 있다.  
 
 ---
 
