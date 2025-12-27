@@ -60,7 +60,7 @@ WantedBy=multi-user.target # 네트워크 포함한 일반 서버 상태 (GUI �
    - 프로세스가 non-zero exit code 로 종료
    - 시그널에 의해 종료됨 (SIGSEGV, SIGABRT 등)
    - Watchdog 타임아웃 발생
-   - OOM Killer 에 의해 종료됨
+   - OOM(Out-Of-Memory) Killer 에 의해 종료됨
 
 <br />
 
