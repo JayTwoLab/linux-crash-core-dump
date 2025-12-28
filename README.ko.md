@@ -166,5 +166,5 @@
    - 또는, `run_hello_with_core.sh`로 1회 실행
 
 ## 스크립트 자동 구동 설치 방법
-   - [설치 방법](INSTALL.md)
+   - [설치 방법](INSTALL.ko.md)
     
