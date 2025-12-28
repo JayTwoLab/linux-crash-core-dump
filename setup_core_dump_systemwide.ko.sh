@@ -9,7 +9,7 @@ if [ "$EUID" -ne 0 ]; then
     echo "예: sudo $0"
     exit 1
 fi
-
+ 
 # core 파일을 실행 디렉터리에 생성: core.<exe>.<pid>.<time>
 CORE_PATTERN="core.%e.%p.%t"
 # time 정보 읽는 예제: date -d @1735123456 '+%Y-%m-%d %H:%M:%S %Z'

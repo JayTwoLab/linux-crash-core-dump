@@ -9,7 +9,7 @@ if [ "$EUID" -ne 0 ]; then
     echo "Example: sudo $0"
     exit 1
 fi
-
+ 
 # Create core files in the execution directory: core.<exe>.<pid>.<time>
 CORE_PATTERN="core.%e.%p.%t"
 # Example to read time info: date -d @1735123456 '+%Y-%m-%d %H:%M:%S %Z'

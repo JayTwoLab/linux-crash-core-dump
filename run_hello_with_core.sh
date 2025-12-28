@@ -7,7 +7,7 @@
 # If not configured, coredump files will not be created.
 
 set -euo pipefail
-
+ 
 # Set working directory and executable path
 WORKDIR="/home/jaytwo/workspace/coredump-workspace"
 EXEC="${WORKDIR}/hello"

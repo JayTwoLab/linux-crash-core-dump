@@ -8,7 +8,7 @@ set -euo pipefail
 shopt -s nullglob
 
 FOUND=0
-
+ 
 for f in core.*; do
     # 마지막 '.' 이후를 timestamp로 간주
     ts="${f##*.}"

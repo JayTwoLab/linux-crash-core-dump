@@ -6,7 +6,7 @@
 set -euo pipefail
 
 shopt -s nullglob
-
+ 
 FOUND=0
 
 for f in core.*; do

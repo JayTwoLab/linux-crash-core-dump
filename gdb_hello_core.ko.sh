@@ -3,7 +3,7 @@
 # 이 스크립트는 지정된 core 덤프 파일을 gdb로 분석하기 위해 실행됩니다.
 
 set -euo pipefail
-
+ 
 # 작업 디렉터리 및 실행 파일 경로 설정
 WORKDIR="/home/jaytwo/workspace/coredump-workspace"
 EXEC="${WORKDIR}/hello"

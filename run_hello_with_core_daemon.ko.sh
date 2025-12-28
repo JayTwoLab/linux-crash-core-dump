@@ -8,7 +8,7 @@
 # 설정하지 않으면 coredump 파일이 생성되지 않습니다. 
 
 set -euo pipefail
-
+ 
 # 작업 디렉터리 및 실행 파일 경로, 로그 파일 경로 설정
 WORKDIR="/home/jaytwo/workspace/coredump-workspace"
 EXEC="${WORKDIR}/hello"

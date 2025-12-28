@@ -7,7 +7,7 @@ set -euo pipefail
 # Set working directory and executable path
 WORKDIR="/home/jaytwo/workspace/coredump-workspace"
 EXEC="${WORKDIR}/hello"
-
+ 
 # Check arguments
 if [ $# -ne 1 ]; then
     echo "Usage: $0 <core_dump_file>"
