@@ -1,36 +1,37 @@
+# Auto-run on Linux Boot <sub>(Without Login)</sub>
 
-# 리눅스 부팅 직후 자동 실행 <sub> (로그인 없이) </sub>
+[Korean](INSTALL.ko.md)
 
-- bash 로그인 여부와 무관하게, 리눅스가 부팅되자마자 자동 실행되게 하려면 반드시 `systemd system` 서비스로 등록해야 합니다.
-
-<br />
-
----
-
-## 1. 왜 다른 방법들은 안 되는가?
-
-| 방법                  | 로그인 필요         | 부팅 직후 자동 |
-| --------------------- | ------------------- | -------------- |
-| nohup, disown         | 필요                | 불가능         |
-| systemd --user        | 필요 (linger 필요)  | 제한적         |
-| systemd system 서비스 | 불필요              | 가능           |
-
-- nohup, tmux, screen 방식은 터미널 또는 로그인 세션을 전제로 합니다.
-- systemd --user 방식은 사용자 세션에 의존합니다.
-- systemd system 서비스만이 로그인 없이 부팅 시 자동 실행됩니다.
+- To automatically run a program immediately after Linux boots, regardless of login, it must be registered as a **systemd system service**.
 
 <br />
 
 ---
 
-## 2. 정석 구성 방법
+## 1. Why Other Methods Do Not Work
 
-### 2.1. systemd system 서비스 파일 생성 (root)
+| Method                | Login Required | Auto Run on Boot |
+| --------------------- | -------------- | ---------------- |
+| nohup, disown         | Required       | Not possible     |
+| systemd --user        | Required (linger needed) | Limited |
+| systemd system service| Not required   | Yes              |
 
-- 다음과 같이 서비스 파일 생성 
+- `nohup`, `tmux`, and `screen` require a terminal or login session.
+- `systemd --user` depends on a user session.
+- Only **systemd system services** can run automatically at boot without login.
+
+<br />
+
+---
+
+## 2. Standard Setup Method
+
+### 2.1. Create a systemd system service (root)
+
+- Create the service file:
    - `sudo vim /etc/systemd/system/hello-core.service`
 
-- `system/hello-core.service` 파일
+- `system/hello-core.service` file:
 ```ini
 [Unit]
 Description=hello daemon (core dump enabled)
@@ -38,35 +39,35 @@ After=network.target
 
 [Service]
 Type=simple
-# 실행 프로그램 경로 및 이름
+# Executable path
 WorkingDirectory=/home/jaytwo/workspace
-ExecStart=/home/jaytwo/workspace/hello # 하단의 User 계정의 +x 권한이 되어 잇어야 함
+ExecStart=/home/jaytwo/workspace/hello  # Must have +x permission for the user below
 
-Restart=always # 어떤 종료든 무조건 재시작
-# Restart=on-failure 비정상 종료 시에만 재시작
-RestartSec=60 # 재시작 대기 시간 (초)
-# StartLimitIntervalSec=60 StartLimitBurst=5 무한 재시작 방지 (60초 안에 5번 이상 실패하면 중지) 
+Restart=always          # Always restart regardless of exit reason
+# Restart=on-failure    # Restart only on abnormal termination
+RestartSec=60           # Restart delay (seconds)
+# StartLimitIntervalSec=60 StartLimitBurst=5  # Prevent infinite restart loops
 
-LimitCORE=infinity # core dump 파일 무제한 생성
+LimitCORE=infinity      # Unlimited core dump size
 
-User=jaytwo # 리눅스 계정
-Group=jaytwo # 그룹은 생략 가능함. groups 또는 id 명령으로 확인 가능.
+User=jaytwo             # Linux user
+Group=jaytwo            # Group (optional, check via groups or id)
 
 [Install]
-WantedBy=multi-user.target # 네트워크 포함한 일반 서버 상태 (GUI 않해도 됨)
+WantedBy=multi-user.target  # Normal server state (no GUI required)
 ```
 
-- `Restart=on-failure` 에서 재시작되는 경우
-   - 프로세스가 non-zero exit code 로 종료
-   - 시그널에 의해 종료됨 (SIGSEGV, SIGABRT 등)
-   - Watchdog 타임아웃 발생
-   - OOM(Out-Of-Memory) Killer 에 의해 종료됨
+- When `Restart=on-failure` triggers:
+   - Process exits with non-zero exit code
+   - Terminated by a signal (SIGSEGV, SIGABRT, etc.)
+   - Watchdog timeout occurs
+   - Killed by OOM (Out-Of-Memory) killer
 
 <br />
 
 ---
 
-### 2.2. 서비스 등록 및 실행 (`root`, 1회)
+### 2.2. Register and Start the Service (root, once)
 
 ```bash
 sudo systemctl daemon-reload
@@ -74,20 +75,21 @@ sudo systemctl enable hello-core.service
 sudo systemctl start hello-core.service
 ```
 
-- `sudo systemctl daemon-reload` : 디스크에서 다시 읽어 메모리에 반영
-- `sudo systemctl enable hello-core.service` : 부팅 시 자동으로 `hello-core.service`가 시작되도록 등록
-- `sudo systemctl start hello-core.service` : `hello-core.service` 시작 (정지는 stop)
+- `sudo systemctl daemon-reload`: Reload service files into memory
+- `sudo systemctl enable hello-core.service`: Enable auto-start at boot
+- `sudo systemctl start hello-core.service`: Start the service (use `stop` to stop)
 
 <br />
 
-- 상태 확인:
+- Check status:
 
 ```bash
 systemctl status hello-core.service
 ```
+
 <br />
 
-- 로그 확인:
+- View logs:
 
 ```bash
 journalctl -u hello-core.service -f
@@ -97,45 +99,43 @@ journalctl -u hello-core.service -f
 
 ---
 
-## 3. core dump가 생성되기 위한 필수 조건
+## 3. Requirements for Core Dump Generation
 
-1. 커널 설정
+1. Kernel configuration:
 
    ```bash
    cat /proc/sys/kernel/core_pattern
    ```
 
-   예: `core.%e.%p.%t`
+   Example: `core.%e.%p.%t`
 
-2. 실행 디렉터리 쓰기 권한
+2. Write permission in the execution directory  
    `/home/jaytwo/workspace`
 
-3. core size 제한 해제
-   systemd 서비스 설정의 `LimitCORE=infinity`
+3. Core size limit removed  
+   `LimitCORE=infinity` in systemd service
 
 <br />
 
 ---
 
-## 4. 전체 흐름 요약
+## 4. Overall Flow Summary
 
 ```
-리눅스 부팅
+Linux boot
  → kernel
  → systemd (PID 1)
-     → hello-core.service 실행
-         → hello 크래시 시 core dump 생성
+     → hello-core.service starts
+         → core dump generated on crash
 ```
 
-로그인, bash, SSH는 필요하지 않습니다.
+Login, bash, or SSH are not required.
 
 <br />
 
 ---
 
-## 5. 요약
+## 5. Summary
 
-부팅 후 로그인하지 않아도 자동 실행되게 하려면
-systemd system 서비스로 등록하는 것이 유일하고 정석적인 방법입니다.
-
-
+To run a program automatically after boot without login,  
+registering it as a **systemd system service** is the only correct and standard approach.
