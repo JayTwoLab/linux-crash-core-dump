@@ -5,7 +5,8 @@
 set -euo pipefail
  
 # 작업 디렉터리 및 실행 파일 경로 설정
-WORKDIR="/home/jaytwo/workspace/coredump-workspace"
+# WORKDIR="/home/jaytwo/workspace/coredump-workspace" # 실행 프로그램이 있는 경로에서 시작하지 않는 경우 반드시 절대 경로를 설정하여야 합니다.
+WORKDIR="$(pwd)"
 EXEC="${WORKDIR}/hello"
 
 # 인자 확인

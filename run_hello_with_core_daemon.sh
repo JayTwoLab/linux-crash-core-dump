@@ -10,7 +10,8 @@
 set -euo pipefail
  
 # Set working directory, executable path, and log file path
-WORKDIR="/home/jaytwo/workspace/coredump-workspace"
+# WORKDIR="/home/jaytwo/workspace/coredump-workspace" # If you register this script as a service, be sure to set an absolute path.
+WORKDIR="$(pwd)"
 EXEC="${WORKDIR}/hello"
 LOG="${WORKDIR}/hello_daemon.log"
 

@@ -5,7 +5,8 @@
 set -euo pipefail
 
 # Set working directory and executable path
-WORKDIR="/home/jaytwo/workspace/coredump-workspace"
+# WORKDIR="/home/jaytwo/workspace/coredump-workspace" # If not starting from the directory where the executable is located, be sure to set an absolute path.
+WORKDIR="$(pwd)"
 EXEC="${WORKDIR}/hello"
  
 # Check arguments
