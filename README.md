@@ -21,11 +21,11 @@
     ```
   - Debug build example:
     - command 
-     ```bash
+      ```bash
       g++ -g -O0 -Wall -Wextra -o hello main.cpp
-     ```
+      ```
      - cmake
-     ```cmake
+      ```cmake
       if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
           target_compile_options(hello PRIVATE
               -g
@@ -37,9 +37,9 @@
       ``` 
   - Using AddressSanitizer / UBSanitizer:
     - command
-    ```bash
-    g++ -g -O0 -Wall -Wextra -fsanitize=address,undefined -fno-omit-frame-pointer -o hello main.cpp
-    ```
+      ```bash
+      g++ -g -O0 -Wall -Wextra -fsanitize=address,undefined -fno-omit-frame-pointer -o hello main.cpp
+      ```
     - cmake
       ```cmake
       if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
