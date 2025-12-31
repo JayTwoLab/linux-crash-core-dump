@@ -2,6 +2,7 @@
 
 # This script runs gdb to analyze the specified core dump file.
 
+# Bash script strict error handling
 set -euo pipefail
 
 # Set working directory and executable path

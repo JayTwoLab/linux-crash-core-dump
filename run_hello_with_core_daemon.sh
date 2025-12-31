@@ -7,6 +7,7 @@
 # using the setup_core_dump_systemwide.sh script.
 # If not configured, coredump files will not be created.
 
+# Strict error handling in bash script
 set -euo pipefail
  
 # Set working directory, executable path, and log file path

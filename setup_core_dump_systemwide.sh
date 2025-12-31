@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Strict error handling in bash script
 set -euo pipefail
 
 # This script must be run with sudo.

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Bash 스크립트에서 오류를 엄격하게 처리
 set -euo pipefail
 
 # 이 스크립트는 sudo 로 실행 되어야 합니다.
