@@ -20,14 +20,43 @@
     }
     ```
   - Debug build example:
-    ```bash
-    g++ -g -O0 -Wall -Wextra -o hello main.cpp
-    ```
+    - command 
+     ```bash
+      g++ -g -O0 -Wall -Wextra -o hello main.cpp
+     ```
+     - cmake
+     ```cmake
+      if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+          target_compile_options(hello PRIVATE
+              -g
+              -O0
+              -Wall
+              -Wextra
+          )
+      endif()    
+      ``` 
   - Using AddressSanitizer / UBSanitizer:
+    - command
     ```bash
     g++ -g -O0 -Wall -Wextra -fsanitize=address,undefined -fno-omit-frame-pointer -o hello main.cpp
     ```
-
+    - cmake
+      ```cmake
+      if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+          target_compile_options(hello PRIVATE
+              -g
+              -O0
+              -Wall
+              -Wextra
+              -fsanitize=address,undefined
+              -fno-omit-frame-pointer
+          )
+      
+          target_link_options(hello PRIVATE
+              -fsanitize=address,undefined
+          )
+      endif()      
+      ``` 
   - **AddressSanitizer (ASan)**: Detects memory errors at runtime  
     - Detectable issues:
       - Heap/stack buffer overflow
