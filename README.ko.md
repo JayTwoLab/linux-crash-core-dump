@@ -11,22 +11,52 @@
 ## 구성 파일
 
 - **main.cpp**  
-   - 고의로 segmentation fault를 발생시키는 간단한 C++ 예제(`main.cpp`)입니다.
+   - 고의로 segmentation fault를 발생시키는 간단한 C++ 예제입니다.
       - ```cpp
         int main() {
-          std::string *ptr = NULL;
+          std::string *ptr = NULL; // or nullptr
           ptr->clear(); // crash here
           return 0;
         }
         ```
    - `Debug` 빌드 예시:
-   ```bash
-   g++ -g -O0 -Wall -Wextra -o hello main.cpp
-   ```
+      - 명령
+      ```bash
+      g++ -g -O0 -Wall -Wextra -o hello main.cpp
+      ```
+      - cmake 파일
+      ```cmake
+      if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+          target_compile_options(hello PRIVATE
+              -g
+              -O0
+              -Wall
+              -Wextra
+          )
+      endif()   
+      ``` 
    - `AddressSanitizer`/`UBSanitizer` 사용:
-   ```bash
-   g++ -g -O0 -Wall -Wextra -fsanitize=address,undefined -fno-omit-frame-pointer -o hello main.cpp
-   ```
+      - 명령
+      ```bash
+      g++ -g -O0 -Wall -Wextra -fsanitize=address,undefined -fno-omit-frame-pointer -o hello main.cpp
+      ```
+      - cmake 파일
+      ```cmake
+      if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+          target_compile_options(hello PRIVATE
+              -g
+              -O0
+              -Wall
+              -Wextra
+              -fsanitize=address,undefined
+              -fno-omit-frame-pointer
+          )
+      
+          target_link_options(hello PRIVATE
+              -fsanitize=address,undefined
+          )
+      endif()    
+      ``` 
 	- `AddressSanitizer` (`ASan`) : 메모리 오류를 실행 중에 탐지합니다.
 	   - 탐지 가능한 오류
 		  - 힙/스택 버퍼 오버플로우
